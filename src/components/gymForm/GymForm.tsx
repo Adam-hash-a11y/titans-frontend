@@ -4,9 +4,9 @@ import { InputType } from "./types";
 import { gymFormReducer, initialState } from "./reducer";
 import { useReducer } from "react";
 import { GymAccodion } from "../gymAccordion/GymAccordion";
-import { SET_FIELD } from "./actions";
+import { RESET, SET_FIELD } from "./actions";
 import { Form } from "@base-ui/react/form";
-import { Button } from "@base-ui/react/button";
+import { FormButton } from "../shared/formButton/FormButton";
 
 export const GymForm = () => {
   const [state, dispatch] = useReducer(gymFormReducer, initialState);
@@ -23,7 +23,12 @@ export const GymForm = () => {
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(state);
+    console.log("submitted", state);
+    dispatch({ type: RESET });
+  };
+  const handleReset = () => {
+    dispatch({ type: RESET });
+    console.log("reset");
   };
 
   return (
@@ -102,7 +107,8 @@ export const GymForm = () => {
           value={state.email}
           id="EmailID"
         />
-        <Button type="submit">Submit</Button>
+        <FormButton type="submit" label="Submit" />
+        <FormButton type="button" label="Reset" handleButton={handleReset} />
       </Form>
       <GymAccodion />
     </>
