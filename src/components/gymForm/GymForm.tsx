@@ -7,6 +7,8 @@ import { GymAccodion } from "../gymAccordion/GymAccordion";
 import { RESET, SET_FIELD } from "./actions";
 import { Form } from "@base-ui/react/form";
 import { FormButton } from "../shared/formButton/FormButton";
+import { ImageUpload } from "../shared/imageUpload/ImageUpload";
+import { registerUser } from "../../services/userService";
 
 export const GymForm = () => {
   const [state, dispatch] = useReducer(gymFormReducer, initialState);
@@ -21,10 +23,36 @@ export const GymForm = () => {
     });
   };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    dispatch({
+      type: SET_FIELD,
+      payload: { name: e.target.name, value: file },
+    });
+  };
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submitted", state);
-    dispatch({ type: RESET });
+
+    const formData = new FormData();
+    formData.append("firstName", state.firstName);
+    formData.append("lastName", state.lastName);
+    formData.append("email", state.email);
+    formData.append("phoneNumber", state.phoneNumber);
+    formData.append("birthDate", state.birthDate);
+    formData.append("gender", state.gender);
+    formData.append("membershipPlan", state.membershipPlan);
+
+    if (state.profileImage) {
+      formData.append("profileImage", state.profileImage);
+    }
+
+    try {
+      const response = await registerUser(formData);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
   const handleReset = () => {
     dispatch({ type: RESET });
@@ -107,6 +135,14 @@ export const GymForm = () => {
           value={state.email}
           id="EmailID"
         />
+        <ImageUpload
+          type={InputType.FILE}
+          label="picture"
+          id="PictureID"
+          name="profileImage"
+          handleFileChange={handleImageChange}
+        />
+
         <FormButton type="submit" label="Submit" />
         <FormButton type="button" label="Reset" handleButton={handleReset} />
       </Form>

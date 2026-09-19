@@ -6,4 +6,5 @@ export enum InputType {
   TEXT = "text",
   DATE_TIME_LOCAL = "datetime-local",
   NUMBER = "number",
+  FILE = "file",
 }
