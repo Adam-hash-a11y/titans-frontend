@@ -1,6 +1,7 @@
 import type React from "react";
 import { InputType } from "../../gymForm/types";
 import { Input } from "@base-ui/react/input";
+import styles from "./index.module.css";
 
 interface Option {
   label: string;
@@ -31,7 +32,7 @@ export const InputField: React.FunctionComponent<Props> = ({
   options,
 }) => {
   return (
-    <>
+    <div className={styles.Field}>
       <label htmlFor={id}>{label}</label>
       {type === InputType.SELECT ? (
         <select id={id} name={name} value={value} onChange={handleFieldChange}>
@@ -46,6 +47,7 @@ export const InputField: React.FunctionComponent<Props> = ({
         </select>
       ) : (
         <Input
+          className={styles.Input}
           type={type}
           placeholder={placeholder}
           id={id}
@@ -54,6 +56,6 @@ export const InputField: React.FunctionComponent<Props> = ({
           name={name}
         />
       )}
-    </>
+    </div>
   );
 };
