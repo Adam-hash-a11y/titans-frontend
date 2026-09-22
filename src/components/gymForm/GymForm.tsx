@@ -3,12 +3,12 @@ import { InputField } from "../shared/inputField/InputField";
 import { InputType } from "./types";
 import { gymFormReducer, initialState } from "./reducer";
 import { useReducer } from "react";
-import { GymAccodion } from "../gymAccordion/GymAccordion";
 import { RESET, SET_FIELD } from "./actions";
 import { Form } from "@base-ui/react/form";
 import { FormButton } from "../shared/formButton/FormButton";
 import { ImageUpload } from "../shared/imageUpload/ImageUpload";
 import { registerUser } from "../../services/userService";
+import styles from "./index.module.css";
 
 export const GymForm = () => {
   const [state, dispatch] = useReducer(gymFormReducer, initialState);
@@ -60,76 +60,90 @@ export const GymForm = () => {
   };
 
   return (
-    <>
-      <Form onSubmit={handleSubmit}>
-        <InputField
-          name="firstName"
-          handleFieldChange={handleFieldChange}
-          label="First Name"
-          type={InputType.TEXT}
-          placeholder="e.g. Adam "
-          value={state.firstName}
-          id="FirstNameID"
-        />
-        <InputField
-          name="lastName"
-          handleFieldChange={handleFieldChange}
-          label="Last Name"
-          type={InputType.TEXT}
-          placeholder="e.g. Hamdi"
-          value={state.lastName}
-          id="LastNameID"
-        />
-        <InputField
-          name="birthDate"
-          handleFieldChange={handleFieldChange}
-          label="Birth Date"
-          type={InputType.DATE_TIME_LOCAL}
-          placeholder=""
-          value={state.birthDate}
-          id="BirthDateID"
-        />
-        <InputField
-          name="gender"
-          handleFieldChange={handleFieldChange}
-          label="Gender"
-          type={InputType.SELECT}
-          placeholder="Select gender"
-          value={state.gender}
-          id="GenderID"
-          options={[
-            { label: "Male", value: "male" },
-            { label: "Female", value: "female" },
-            { label: "Other", value: "other" },
-          ]}
-        />
-        <InputField
-          name="membershipPlan"
-          handleFieldChange={handleFieldChange}
-          label="Membership Plan"
-          type={InputType.SELECT}
-          placeholder="Select plan"
-          value={state.membershipPlan}
-          id="MembershipPlanID"
-          options={[
-            { label: "Basic", value: "basic" },
-            { label: "Standard", value: "standard" },
-            { label: "Premium", value: "premium" },
-          ]}
-        />
-        <InputField
-          name="phoneNumber"
-          handleFieldChange={handleFieldChange}
-          label="phone number"
-          type={InputType.NUMBER}
-          placeholder="Phone Number"
-          value={state.phoneNumber}
-          id="PhoneNumberID"
-        />
+    <div className={styles.Container}>
+      <div className={styles.Intro}>
+        <h2>Join Titans</h2>
+        <h1>CREATE YOUR ACCOUNT</h1>
+        <p>
+          Start you journey. Fill in you details to get started with your
+          membership.
+        </p>
+      </div>
+      <Form className={styles.Form} onSubmit={handleSubmit}>
+        <div className={styles.fieldRow}>
+          <InputField
+            name="firstName"
+            handleFieldChange={handleFieldChange}
+            label="FIRST NAME*"
+            type={InputType.TEXT}
+            placeholder="e.g. Adam "
+            value={state.firstName}
+            id="FirstNameID"
+          />
+          <InputField
+            name="lastName"
+            handleFieldChange={handleFieldChange}
+            label="LAST NAME*"
+            type={InputType.TEXT}
+            placeholder="e.g. Hamdi"
+            value={state.lastName}
+            id="LastNameID"
+          />
+        </div>
+        <div className={styles.fieldRow}>
+          <InputField
+            name="birthDate"
+            handleFieldChange={handleFieldChange}
+            label="BIRTH DATE*"
+            type={InputType.DATE_TIME_LOCAL}
+            placeholder=""
+            value={state.birthDate}
+            id="BirthDateID"
+          />
+          <InputField
+            name="gender"
+            handleFieldChange={handleFieldChange}
+            label="GENDER*"
+            type={InputType.SELECT}
+            placeholder="Select gender"
+            value={state.gender}
+            id="GenderID"
+            options={[
+              { label: "Male", value: "male" },
+              { label: "Female", value: "female" },
+              { label: "Other", value: "other" },
+            ]}
+          />
+        </div>
+        <div className={styles.fieldRow}>
+          <InputField
+            name="membershipPlan"
+            handleFieldChange={handleFieldChange}
+            label="MEMBERSHIP PLAN*"
+            type={InputType.SELECT}
+            placeholder="Select plan"
+            value={state.membershipPlan}
+            id="MembershipPlanID"
+            options={[
+              { label: "Basic", value: "basic" },
+              { label: "Standard", value: "standard" },
+              { label: "Premium", value: "premium" },
+            ]}
+          />
+          <InputField
+            name="phoneNumber"
+            handleFieldChange={handleFieldChange}
+            label="PHONE NUMBER*"
+            type={InputType.NUMBER}
+            placeholder="Phone Number"
+            value={state.phoneNumber}
+            id="PhoneNumberID"
+          />
+        </div>
         <InputField
           name="email"
           handleFieldChange={handleFieldChange}
-          label="Email"
+          label="EMAIL*"
           type={InputType.TEXT}
           placeholder="Enter you Email"
           value={state.email}
@@ -137,16 +151,16 @@ export const GymForm = () => {
         />
         <ImageUpload
           type={InputType.FILE}
-          label="picture"
+          label="PROFILE PICTURE*"
           id="PictureID"
           name="profileImage"
           handleFileChange={handleImageChange}
         />
-
-        <FormButton type="submit" label="Submit" />
-        <FormButton type="button" label="Reset" handleButton={handleReset} />
+        <div className={styles.fieldRow}>
+          <FormButton type="button" label="Reset" handleButton={handleReset} />
+          <FormButton type="submit" label="Submit" />
+        </div>
       </Form>
-      <GymAccodion />
-    </>
+    </div>
   );
 };

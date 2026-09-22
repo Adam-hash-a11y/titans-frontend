@@ -1,5 +1,6 @@
 import type React from "react";
 import { Button } from "@base-ui/react/button";
+import styles from "./index.module.css";
 
 interface Props {
   label: string;
@@ -15,7 +16,12 @@ export const FormButton: React.FunctionComponent<Props> = ({
   type,
 }) => {
   return (
-    <Button type={type} onClick={handleButton} disabled={disabled}>
+    <Button
+      type={type}
+      onClick={handleButton}
+      disabled={disabled}
+      className={type === "submit" ? styles.Submit : styles.Reset}
+    >
       {label}
     </Button>
   );

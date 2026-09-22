@@ -1,0 +1,30 @@
+.Submit,
+.Reset {
+  flex: 1;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.Submit {
+  background-color: #ff4d1c;
+  border: none;
+  color: #ffffff;
+}
+
+.Submit:hover {
+  background-color: #e63e10;
+}
+
+.Reset {
+  background-color: transparent;
+  border: 1px solid #2a2a2a;
+  color: #cccccc;
+}
+
+.Reset:hover {
+  border-color: #3a3a3a;
+}

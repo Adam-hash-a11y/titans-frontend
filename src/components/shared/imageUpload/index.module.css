@@ -1,0 +1,28 @@
+.Dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #3a3a3a;
+  border-radius: 8px;
+  background-color: #1a1a1a;
+  color: #666666;
+  padding: 20px 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.HiddenInput {
+  display: none;
+}
+.Field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 6px;
+}
+
+.Field label {
+  color: #cccccc;
+  font-size: 12px;
+  font-weight: 600;
+}

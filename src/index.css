@@ -1,5 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap");
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+html {
+  background-image: url("/src/assets/titans\ gym.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+}
+body {
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
 }
