@@ -154,6 +154,7 @@ export const GymForm = () => {
           label="PROFILE PICTURE*"
           id="PictureID"
           name="profileImage"
+          file={state.profileImage}
           handleFileChange={handleImageChange}
         />
         <div className={styles.fieldRow}>
