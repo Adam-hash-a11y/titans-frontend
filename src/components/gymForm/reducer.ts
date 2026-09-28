@@ -26,6 +26,9 @@ export const initialState: State = {
 export const gymFormReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case SET_FIELD: {
+      if (action.payload.name === "phoneNumber") {
+        action.payload.value = String(action.payload.value).replace(/\D/g, "");
+      }
       return {
         ...state,
         [action.payload.name]: action.payload.value,
