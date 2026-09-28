@@ -9,6 +9,7 @@ import { FormButton } from "../shared/formButton/FormButton";
 import { ImageUpload } from "../shared/imageUpload/ImageUpload";
 import { registerUser } from "../../services/userService";
 import styles from "./index.module.css";
+import { toast, ToastContainer } from "react-toastify";
 
 export const GymForm = () => {
   const [state, dispatch] = useReducer(gymFormReducer, initialState);
@@ -58,8 +59,10 @@ export const GymForm = () => {
     try {
       const response = await registerUser(formData);
       console.log(response.data);
+      toast.success("Registered successfully!");
     } catch (error) {
       console.error(error);
+      toast.error("Registration failed. Please try again.");
     }
   };
   const handleReset = () => {
@@ -171,6 +174,7 @@ export const GymForm = () => {
           <FormButton type="submit" label="Submit" />
         </div>
       </Form>
+      <ToastContainer />
     </div>
   );
 };
