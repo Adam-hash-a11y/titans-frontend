@@ -134,7 +134,7 @@ export const GymForm = () => {
             name="phoneNumber"
             handleFieldChange={handleFieldChange}
             label="PHONE NUMBER*"
-            type={InputType.NUMBER}
+            type={InputType.TEL}
             placeholder="Phone Number"
             value={state.phoneNumber}
             id="PhoneNumberID"
