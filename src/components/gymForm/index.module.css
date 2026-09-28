@@ -3,11 +3,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 24px;
+  padding: 20px;
   background-color: #141414;
   border: 1px solid #2a2a2a;
   max-width: 600px;
-  margin: 50px auto;
+  margin: 30px auto;
   border-radius: 16px;
 }
 .Intro {
