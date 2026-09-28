@@ -31,6 +31,14 @@ export const GymForm = () => {
       payload: { name: e.target.name, value: file },
     });
   };
+
+  const handleRemoveImage = () => {
+    dispatch({
+      type: SET_FIELD,
+      payload: { name: "profileImage", value: null },
+    });
+  };
+
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -156,6 +164,7 @@ export const GymForm = () => {
           name="profileImage"
           file={state.profileImage}
           handleFileChange={handleImageChange}
+          handleRemove={handleRemoveImage}
         />
         <div className={styles.fieldRow}>
           <FormButton type="button" label="Reset" handleButton={handleReset} />
