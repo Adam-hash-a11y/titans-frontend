@@ -70,7 +70,7 @@ export const ImageUpload: React.FunctionComponent<Props> = ({
         name={name}
         onChange={handleFileChange}
         className={styles.HiddenInput}
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp"
       />
     </div>
   );

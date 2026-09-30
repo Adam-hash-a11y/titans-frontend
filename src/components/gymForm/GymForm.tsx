@@ -10,6 +10,7 @@ import { ImageUpload } from "../shared/imageUpload/ImageUpload";
 import { registerUser } from "../../services/userService";
 import styles from "./index.module.css";
 import { toast, ToastContainer } from "react-toastify";
+import { ALLOWED_TYPES, MAX_IMAGE_SIZE } from "./constants";
 
 export const GymForm = () => {
   const [state, dispatch] = useReducer(gymFormReducer, initialState);
@@ -27,6 +28,19 @@ export const GymForm = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error("Only JPG, PNG or WebP images are allowed.");
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_SIZE) {
+      toast.error("Image must be 5MB or smaller.");
+      e.target.value = "";
+      return;
+    }
+
     dispatch({
       type: SET_FIELD,
       payload: { name: e.target.name, value: file },
