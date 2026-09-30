@@ -1,0 +1,415 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, vi, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { InputField } from "../../src/components/shared/inputField/InputField";
+import { InputType } from "../../src/components/gymForm/types";
+import "@testing-library/jest-dom/vitest";
+
+describe("input field test", () => {
+  it("should render the label and the placeholder", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value=""
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+
+    //ASSERT
+    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("e.g. Adam")).toBeInTheDocument();
+  });
+
+  it("should apply the id and name attributes", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value=""
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const input = screen.getByLabelText(/first name/i);
+
+    //ASSERT
+    expect(input).toHaveAttribute("id", "FirstNameID");
+    expect(input).toHaveAttribute("name", "firstName");
+  });
+
+  it("should apply the given input type", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value=""
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const input = screen.getByLabelText(/first name/i);
+
+    //ASSERT
+    expect(input).toHaveAttribute("type", InputType.TEXT);
+  });
+
+  it("should display the value it receives", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value="Adam"
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const input = screen.getByLabelText(/first name/i);
+
+    //ASSERT
+    expect(input).toHaveValue("Adam");
+  });
+
+  it("should not render a select when the type is text", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value=""
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+
+    //ASSERT
+    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+  });
+
+  it("should not call handleFieldChange on first render", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value=""
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+
+    //ASSERT
+    expect(handleFieldChange).not.toHaveBeenCalled();
+  });
+
+  it("should call handleFieldChange when the user types", async () => {
+    //ARRANGE
+    const user = userEvent.setup();
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value=""
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const input = screen.getByLabelText(/first name/i);
+    await user.type(input, "Adam");
+
+    //ASSERT
+    expect(handleFieldChange).toHaveBeenCalledTimes(4);
+  });
+
+  it("should focus the input when the label is clicked", async () => {
+    //ARRANGE
+    const user = userEvent.setup();
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="firstName"
+        label="FIRST NAME*"
+        type={InputType.TEXT}
+        placeholder="e.g. Adam"
+        value=""
+        id="FirstNameID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    await user.click(screen.getByText(/first name/i));
+
+    //ASSERT
+    expect(screen.getByLabelText(/first name/i)).toHaveFocus();
+  });
+
+  it("should render the gender placeholder plus every option", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    const options = [
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
+      { label: "Other", value: "other" },
+    ];
+    render(
+      <InputField
+        name="gender"
+        label="GENDER*"
+        type={InputType.SELECT}
+        placeholder="Select gender"
+        value=""
+        id="GenderID"
+        options={options}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+
+    //ASSERT
+    expect(screen.getAllByRole("option")).toHaveLength(4);
+    expect(screen.getByRole("option", { name: "Male" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Female" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Other" })).toBeInTheDocument();
+  });
+
+  it("should render the membership plan placeholder plus every option", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    const options = [
+      { label: "Basic", value: "basic" },
+      { label: "Standard", value: "standard" },
+      { label: "Premium", value: "premium" },
+    ];
+    render(
+      <InputField
+        name="membershipPlan"
+        label="MEMBERSHIP PLAN*"
+        type={InputType.SELECT}
+        placeholder="Select plan"
+        value=""
+        id="MembershipPlanID"
+        options={options}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+
+    //ASSERT
+    expect(screen.getAllByRole("option")).toHaveLength(4);
+    expect(screen.getByRole("option", { name: "Basic" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", { name: "Standard" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Premium" })).toBeInTheDocument();
+  });
+
+  it("should render the placeholder as a disabled option", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    const options = [
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
+      { label: "Other", value: "other" },
+    ];
+    render(
+      <InputField
+        name="gender"
+        label="GENDER*"
+        type={InputType.SELECT}
+        placeholder="Select gender"
+        value=""
+        id="GenderID"
+        options={options}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const placeholderOption = screen.getByRole("option", {
+      name: "Select gender",
+    });
+
+    //ASSERT
+    expect(placeholderOption).toBeDisabled();
+  });
+
+  it("should show the selected gender it receives", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    const options = [
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
+      { label: "Other", value: "other" },
+    ];
+    render(
+      <InputField
+        name="gender"
+        label="GENDER*"
+        type={InputType.SELECT}
+        placeholder="Select gender"
+        value="female"
+        id="GenderID"
+        options={options}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const select = screen.getByRole("combobox");
+
+    //ASSERT
+    expect(select).toHaveValue("female");
+  });
+
+  it("should show the selected membership plan it receives", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    const options = [
+      { label: "Basic", value: "basic" },
+      { label: "Standard", value: "standard" },
+      { label: "Premium", value: "premium" },
+    ];
+    render(
+      <InputField
+        name="membershipPlan"
+        label="MEMBERSHIP PLAN*"
+        type={InputType.SELECT}
+        placeholder="Select plan"
+        value="premium"
+        id="MembershipPlanID"
+        options={options}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const select = screen.getByRole("combobox");
+
+    //ASSERT
+    expect(select).toHaveValue("premium");
+  });
+
+  it("should render only the placeholder when there are no options", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="gender"
+        label="GENDER*"
+        type={InputType.SELECT}
+        placeholder="Select gender"
+        value=""
+        id="GenderID"
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+
+    //ASSERT
+    expect(screen.getAllByRole("option")).toHaveLength(1);
+  });
+
+  it("should call handleFieldChange when a gender is selected", async () => {
+    //ARRANGE
+    const user = userEvent.setup();
+    const handleFieldChange = vi.fn();
+    const options = [
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
+      { label: "Other", value: "other" },
+    ];
+    render(
+      <InputField
+        name="gender"
+        label="GENDER*"
+        type={InputType.SELECT}
+        placeholder="Select gender"
+        value=""
+        id="GenderID"
+        options={options}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const select = screen.getByRole("combobox");
+    await user.selectOptions(select, "female");
+
+    //ASSERT
+    expect(handleFieldChange).toHaveBeenCalledTimes(1);
+  });
+
+  it("should call handleFieldChange when a membership plan is selected", async () => {
+    //ARRANGE
+    const user = userEvent.setup();
+    const handleFieldChange = vi.fn();
+    const options = [
+      { label: "Basic", value: "basic" },
+      { label: "Standard", value: "standard" },
+      { label: "Premium", value: "premium" },
+    ];
+    render(
+      <InputField
+        name="membershipPlan"
+        label="MEMBERSHIP PLAN*"
+        type={InputType.SELECT}
+        placeholder="Select plan"
+        value=""
+        id="MembershipPlanID"
+        options={options}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+    const select = screen.getByRole("combobox");
+    await user.selectOptions(select, "premium");
+
+    //ASSERT
+    expect(handleFieldChange).toHaveBeenCalledTimes(1);
+  });
+});
