@@ -2,7 +2,7 @@ import type React from "react";
 import { InputType } from "../../gymForm/types";
 import { Input } from "@base-ui/react/input";
 import styles from "./index.module.css";
-
+import { InputError } from "../inputError/InputError";
 interface Option {
   label: string;
   value: string;
@@ -19,6 +19,11 @@ interface Props {
   handleFieldChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;
+  handleBlur?: (
+    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
+  touched?: boolean;
+  error?: string;
 }
 
 export const InputField: React.FunctionComponent<Props> = ({
@@ -30,12 +35,21 @@ export const InputField: React.FunctionComponent<Props> = ({
   id,
   name,
   options,
+  touched,
+  error,
+  handleBlur,
 }) => {
   return (
     <div className={styles.Field}>
       <label htmlFor={id}>{label}</label>
       {type === InputType.SELECT ? (
-        <select id={id} name={name} value={value} onChange={handleFieldChange}>
+        <select
+          id={id}
+          name={name}
+          value={value}
+          onChange={handleFieldChange}
+          onBlur={handleBlur}
+        >
           <option value="" disabled>
             {placeholder}
           </option>
@@ -54,8 +68,10 @@ export const InputField: React.FunctionComponent<Props> = ({
           value={value}
           onChange={handleFieldChange}
           name={name}
+          onBlur={handleBlur}
         />
       )}
+      {touched && error && <InputError error={error} />}
     </div>
   );
 };
