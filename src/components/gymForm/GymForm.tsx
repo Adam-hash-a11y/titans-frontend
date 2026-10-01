@@ -3,7 +3,7 @@ import { InputField } from "../shared/inputField/InputField";
 import { InputType } from "./types";
 import { gymFormReducer, initialState } from "./reducer";
 import { useReducer } from "react";
-import { RESET, SET_FIELD } from "./actions";
+import { RESET, SET_FIELD, SET_TOUCHED } from "./actions";
 import { Form } from "@base-ui/react/form";
 import { FormButton } from "../shared/formButton/FormButton";
 import { ImageUpload } from "../shared/imageUpload/ImageUpload";
@@ -11,6 +11,15 @@ import { registerUser } from "../../services/userService";
 import styles from "./index.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import { ALLOWED_TYPES, MAX_IMAGE_SIZE } from "./constants";
+import {
+  isValidBirthDate,
+  isValidEmail,
+  isValidFirstName,
+  isValidGender,
+  isValidLastName,
+  isValidMembershipPlan,
+  isValidProfileImage,
+} from "../../helpers/gymForm.validators";
 
 export const GymForm = () => {
   const [state, dispatch] = useReducer(gymFormReducer, initialState);
@@ -26,6 +35,8 @@ export const GymForm = () => {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: SET_TOUCHED, payload: { name: "profileImage" } });
+
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -48,12 +59,12 @@ export const GymForm = () => {
   };
 
   const handleRemoveImage = () => {
+    dispatch({ type: SET_TOUCHED, payload: { name: "profileImage" } });
     dispatch({
       type: SET_FIELD,
       payload: { name: "profileImage", value: null },
     });
   };
-
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -84,6 +95,25 @@ export const GymForm = () => {
     console.log("reset");
   };
 
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    dispatch({
+      type: SET_TOUCHED,
+      payload: { name: e.target.name },
+    });
+  };
+
+  const errors = {
+    firstName: isValidFirstName(state.firstName),
+    lastName: isValidLastName(state.lastName),
+    birthDate: isValidBirthDate(state.birthDate),
+    gender: isValidGender(state.gender),
+    membershipPlan: isValidMembershipPlan(state.membershipPlan),
+    email: isValidEmail(state.email),
+    profileImage: isValidProfileImage(state.profileImage),
+  };
+
   return (
     <div className={styles.Container}>
       <div className={styles.Intro}>
@@ -104,6 +134,9 @@ export const GymForm = () => {
             placeholder="e.g. Adam "
             value={state.firstName}
             id="FirstNameID"
+            handleBlur={handleBlur}
+            touched={state.touched.firstName}
+            error={errors.firstName}
           />
           <InputField
             name="lastName"
@@ -113,12 +146,18 @@ export const GymForm = () => {
             placeholder="e.g. Hamdi"
             value={state.lastName}
             id="LastNameID"
+            handleBlur={handleBlur}
+            touched={state.touched.lastName}
+            error={errors.lastName}
           />
         </div>
         <div className={styles.fieldRow}>
           <InputField
             name="birthDate"
             handleFieldChange={handleFieldChange}
+            handleBlur={handleBlur}
+            touched={state.touched.birthDate}
+            error={errors.birthDate}
             label="BIRTH DATE*"
             type={InputType.DATE_TIME_LOCAL}
             placeholder=""
@@ -128,6 +167,9 @@ export const GymForm = () => {
           <InputField
             name="gender"
             handleFieldChange={handleFieldChange}
+            handleBlur={handleBlur}
+            touched={state.touched.gender}
+            error={errors.gender}
             label="GENDER*"
             type={InputType.SELECT}
             placeholder="Select gender"
@@ -144,6 +186,9 @@ export const GymForm = () => {
           <InputField
             name="membershipPlan"
             handleFieldChange={handleFieldChange}
+            handleBlur={handleBlur}
+            touched={state.touched.membershipPlan}
+            error={errors.membershipPlan}
             label="MEMBERSHIP PLAN*"
             type={InputType.SELECT}
             placeholder="Select plan"
@@ -168,6 +213,9 @@ export const GymForm = () => {
         <InputField
           name="email"
           handleFieldChange={handleFieldChange}
+          handleBlur={handleBlur}
+          touched={state.touched.email}
+          error={errors.email}
           label="EMAIL*"
           type={InputType.TEXT}
           placeholder="Enter you Email"
@@ -182,6 +230,9 @@ export const GymForm = () => {
           file={state.profileImage}
           handleFileChange={handleImageChange}
           handleRemove={handleRemoveImage}
+          handleBlur={handleBlur}
+          touched={state.touched.profileImage}
+          error={errors.profileImage}
         />
         <div className={styles.fieldRow}>
           <FormButton type="button" label="Reset" handleButton={handleReset} />

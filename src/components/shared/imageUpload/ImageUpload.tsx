@@ -1,5 +1,6 @@
 import type React from "react";
 import type { InputType } from "../../gymForm/types";
+import { InputError } from "../inputError/InputError";
 import styles from "./index.module.css";
 
 interface Props {
@@ -10,6 +11,9 @@ interface Props {
   file: File | null;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleRemove: () => void;
+  touched?: boolean;
+  error?: string;
+  handleBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 export const ImageUpload: React.FunctionComponent<Props> = ({
@@ -20,6 +24,9 @@ export const ImageUpload: React.FunctionComponent<Props> = ({
   handleFileChange,
   handleRemove,
   type,
+  touched,
+  error,
+  handleBlur,
 }) => {
   return (
     <div className={styles.Field}>
@@ -71,7 +78,9 @@ export const ImageUpload: React.FunctionComponent<Props> = ({
         onChange={handleFileChange}
         className={styles.HiddenInput}
         accept="image/jpeg,image/png,image/webp"
+        onBlur={handleBlur}
       />
+      {touched && error && <InputError error={error} />}
     </div>
   );
 };

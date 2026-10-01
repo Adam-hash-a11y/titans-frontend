@@ -1,4 +1,4 @@
-import { RESET, SET_FIELD, type Action } from "./actions";
+import { RESET, SET_FIELD, SET_TOUCHED, type Action } from "./actions";
 import type { Gender, MembershipPlan } from "./types";
 
 export interface State {
@@ -10,6 +10,16 @@ export interface State {
   gender: Gender | "";
   profileImage: File | null;
   membershipPlan: MembershipPlan | "";
+  touched: {
+    firstName: boolean;
+    lastName: boolean;
+    email: boolean;
+    phoneNumber: boolean;
+    birthDate: boolean;
+    gender: boolean;
+    profileImage: boolean;
+    membershipPlan: boolean;
+  };
 }
 
 export const initialState: State = {
@@ -21,6 +31,16 @@ export const initialState: State = {
   gender: "",
   profileImage: null,
   membershipPlan: "",
+  touched: {
+    firstName: false,
+    lastName: false,
+    email: false,
+    phoneNumber: false,
+    birthDate: false,
+    gender: false,
+    profileImage: false,
+    membershipPlan: false,
+  },
 };
 
 export const gymFormReducer = (state: State, action: Action): State => {
@@ -36,6 +56,13 @@ export const gymFormReducer = (state: State, action: Action): State => {
     }
     case RESET: {
       return initialState;
+    }
+
+    case SET_TOUCHED: {
+      return {
+        ...state,
+        touched: { ...state.touched, [action.payload.name]: true },
+      };
     }
 
     default:
