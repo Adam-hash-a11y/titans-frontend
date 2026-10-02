@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, vi, it } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { InputField } from "../../src/components/shared/inputField/InputField";
@@ -184,18 +184,20 @@ describe("input field test", () => {
         label="FIRST NAME*"
         type={InputType.TEXT}
         placeholder="e.g. Adam"
-        value=""
         id="FirstNameID"
         handleFieldChange={handleFieldChange}
       />,
     );
 
     //ACT
-    const input = screen.getByTestId("input-field-input");
+    const input = screen.getByTestId("input-field-input") as HTMLInputElement;
     await user.type(input, "Adam");
 
     //ASSERT
     expect(handleFieldChange).toHaveBeenCalledTimes(4);
+    await waitFor(() => {
+      expect(input.value).toBe("Adam");
+    });
   });
 
   it("should focus the input when the label is clicked", async () => {

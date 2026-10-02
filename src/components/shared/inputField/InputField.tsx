@@ -12,7 +12,7 @@ interface Props {
   label: string;
   type: InputType;
   placeholder: string;
-  value: string | number;
+  value?: string | number;
   id: string;
   name: string;
   options?: Option[];
