@@ -50,7 +50,7 @@ export const InputField: React.FunctionComponent<Props> = ({
           onChange={handleFieldChange}
           onBlur={handleBlur}
         >
-          <option value="" disabled>
+          <option value="" disabled hidden>
             {placeholder}
           </option>
           {options?.map((opt) => (
