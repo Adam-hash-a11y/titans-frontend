@@ -117,6 +117,18 @@ export const GymForm = () => {
     phoneNumber: isValidPhoneNumber(state.phoneNumber),
   };
 
+  const isValid = Object.values(errors).every((error) => error === "");
+
+  const hasChanges =
+    state.firstName !== initialState.firstName ||
+    state.lastName !== initialState.lastName ||
+    state.email !== initialState.email ||
+    state.phoneNumber !== initialState.phoneNumber ||
+    state.birthDate !== initialState.birthDate ||
+    state.gender !== initialState.gender ||
+    state.membershipPlan !== initialState.membershipPlan ||
+    state.profileImage !== initialState.profileImage;
+
   return (
     <div className={styles.Container}>
       <div className={styles.Intro}>
@@ -241,8 +253,13 @@ export const GymForm = () => {
           error={errors.profileImage}
         />
         <div className={styles.fieldRow}>
-          <FormButton type="button" label="Reset" handleButton={handleReset} />
-          <FormButton type="submit" label="Submit" />
+          <FormButton
+            type="button"
+            label="Reset"
+            handleButton={handleReset}
+            disabled={!hasChanges}
+          />
+          <FormButton type="submit" label="Submit" disabled={!isValid} />
         </div>
       </Form>
       <ToastContainer />
