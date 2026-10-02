@@ -20,7 +20,9 @@ export const FormButton: React.FunctionComponent<Props> = ({
       type={type}
       onClick={handleButton}
       disabled={disabled}
-      className={type === "submit" ? styles.Submit : styles.Reset}
+      className={`${type === "submit" ? styles.Submit : styles.Reset} ${
+        disabled ? styles.Disabled : ""
+      }`}
     >
       {label}
     </Button>
