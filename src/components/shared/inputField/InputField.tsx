@@ -45,14 +45,18 @@ export const InputField: React.FunctionComponent<Props> = ({
 
   return (
     <div
+      data-testid="input-field"
       className={`${styles.Field} ${
         touched ? (error ? styles.Invalid : styles.Valid) : ""
       }`}
     >
-      <label htmlFor={id}>{label}</label>
+      <label data-testid="input-field-label" htmlFor={id}>
+        {label}
+      </label>
       <div className={styles.Control}>
         {type === InputType.SELECT ? (
           <select
+            data-testid="input-field-select"
             id={id}
             name={name}
             value={value}
@@ -70,6 +74,7 @@ export const InputField: React.FunctionComponent<Props> = ({
           </select>
         ) : (
           <Input
+            data-testid="input-field-input"
             className={styles.Input}
             type={type}
             placeholder={placeholder}
