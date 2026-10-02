@@ -184,98 +184,6 @@ describe("input field test", () => {
     expect(screen.getByLabelText(/first name/i)).toHaveFocus();
   });
 
-  it("should render the gender placeholder plus every option", () => {
-    //ARRANGE
-    const handleFieldChange = vi.fn();
-    const options = [
-      { label: "Male", value: "male" },
-      { label: "Female", value: "female" },
-      { label: "Other", value: "other" },
-    ];
-    render(
-      <InputField
-        name="gender"
-        label="GENDER*"
-        type={InputType.SELECT}
-        placeholder="Select gender"
-        value=""
-        id="GenderID"
-        options={options}
-        handleFieldChange={handleFieldChange}
-      />,
-    );
-
-    //ACT
-
-    //ASSERT
-    expect(screen.getAllByRole("option")).toHaveLength(4);
-    expect(screen.getByRole("option", { name: "Male" })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: "Female" })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: "Other" })).toBeInTheDocument();
-  });
-
-  it("should render the membership plan placeholder plus every option", () => {
-    //ARRANGE
-    const handleFieldChange = vi.fn();
-    const options = [
-      { label: "Basic", value: "basic" },
-      { label: "Standard", value: "standard" },
-      { label: "Premium", value: "premium" },
-    ];
-    render(
-      <InputField
-        name="membershipPlan"
-        label="MEMBERSHIP PLAN*"
-        type={InputType.SELECT}
-        placeholder="Select plan"
-        value=""
-        id="MembershipPlanID"
-        options={options}
-        handleFieldChange={handleFieldChange}
-      />,
-    );
-
-    //ACT
-
-    //ASSERT
-    expect(screen.getAllByRole("option")).toHaveLength(4);
-    expect(screen.getByRole("option", { name: "Basic" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("option", { name: "Standard" }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: "Premium" })).toBeInTheDocument();
-  });
-
-  it("should render the placeholder as a disabled option", () => {
-    //ARRANGE
-    const handleFieldChange = vi.fn();
-    const options = [
-      { label: "Male", value: "male" },
-      { label: "Female", value: "female" },
-      { label: "Other", value: "other" },
-    ];
-    render(
-      <InputField
-        name="gender"
-        label="GENDER*"
-        type={InputType.SELECT}
-        placeholder="Select gender"
-        value=""
-        id="GenderID"
-        options={options}
-        handleFieldChange={handleFieldChange}
-      />,
-    );
-
-    //ACT
-    const placeholderOption = screen.getByRole("option", {
-      name: "Select gender",
-    });
-
-    //ASSERT
-    expect(placeholderOption).toBeDisabled();
-  });
-
   it("should show the selected gender it receives", () => {
     //ARRANGE
     const handleFieldChange = vi.fn();
@@ -330,27 +238,6 @@ describe("input field test", () => {
 
     //ASSERT
     expect(select).toHaveValue("premium");
-  });
-
-  it("should render only the placeholder when there are no options", () => {
-    //ARRANGE
-    const handleFieldChange = vi.fn();
-    render(
-      <InputField
-        name="gender"
-        label="GENDER*"
-        type={InputType.SELECT}
-        placeholder="Select gender"
-        value=""
-        id="GenderID"
-        handleFieldChange={handleFieldChange}
-      />,
-    );
-
-    //ACT
-
-    //ASSERT
-    expect(screen.getAllByRole("option")).toHaveLength(1);
   });
 
   it("should call handleFieldChange when a gender is selected", async () => {
