@@ -43,3 +43,34 @@
   background-color: #1a1a1a;
   color: #ffffff;
 }
+
+.Invalid .Input,
+.Invalid select,
+.Invalid .Input:focus,
+.Invalid select:focus {
+  border-color: #ff3b3b;
+}
+
+.Valid .Input,
+.Valid select,
+.Valid .Input:focus,
+.Valid select:focus {
+  border-color: #3ecf8e;
+}
+
+.Control {
+  position: relative;
+}
+
+.Check {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: #3ecf8e;
+  pointer-events: none;
+}
+
+.CheckShift {
+  right: 42px;
+}
