@@ -5,6 +5,18 @@ import { InputField } from "../../src/components/shared/inputField/InputField";
 import { InputType } from "../../src/components/gymForm/types";
 import "@testing-library/jest-dom/vitest";
 
+const genderOptions = [
+  { label: "Male", value: "male" },
+  { label: "Female", value: "female" },
+  { label: "Other", value: "other" },
+];
+
+const planOptions = [
+  { label: "Basic", value: "basic" },
+  { label: "Standard", value: "standard" },
+  { label: "Premium", value: "premium" },
+];
+
 describe("input field test", () => {
   it("should render the label and the placeholder", () => {
     //ARRANGE
@@ -22,10 +34,12 @@ describe("input field test", () => {
     );
 
     //ACT
+    const label = screen.getByTestId("input-field-label");
+    const input = screen.getByTestId("input-field-input");
 
     //ASSERT
-    expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("e.g. Adam")).toBeInTheDocument();
+    expect(label).toHaveTextContent("FIRST NAME*");
+    expect(input).toHaveAttribute("placeholder", "e.g. Adam");
   });
 
   it("should apply the id and name attributes", () => {
@@ -44,7 +58,7 @@ describe("input field test", () => {
     );
 
     //ACT
-    const input = screen.getByLabelText(/first name/i);
+    const input = screen.getByTestId("input-field-input");
 
     //ASSERT
     expect(input).toHaveAttribute("id", "FirstNameID");
@@ -67,7 +81,7 @@ describe("input field test", () => {
     );
 
     //ACT
-    const input = screen.getByLabelText(/first name/i);
+    const input = screen.getByTestId("input-field-input");
 
     //ASSERT
     expect(input).toHaveAttribute("type", InputType.TEXT);
@@ -89,7 +103,7 @@ describe("input field test", () => {
     );
 
     //ACT
-    const input = screen.getByLabelText(/first name/i);
+    const input = screen.getByTestId("input-field-input");
 
     //ASSERT
     expect(input).toHaveValue("Adam");
@@ -113,7 +127,30 @@ describe("input field test", () => {
     //ACT
 
     //ASSERT
-    expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("input-field-select")).not.toBeInTheDocument();
+  });
+
+  it("should not render an input when the type is select", () => {
+    //ARRANGE
+    const handleFieldChange = vi.fn();
+    render(
+      <InputField
+        name="gender"
+        label="GENDER*"
+        type={InputType.SELECT}
+        placeholder="Select gender"
+        value=""
+        id="GenderID"
+        options={genderOptions}
+        handleFieldChange={handleFieldChange}
+      />,
+    );
+
+    //ACT
+
+    //ASSERT
+    expect(screen.queryByTestId("input-field-input")).not.toBeInTheDocument();
+    expect(screen.getByTestId("input-field-select")).toBeInTheDocument();
   });
 
   it("should not call handleFieldChange on first render", () => {
@@ -154,7 +191,7 @@ describe("input field test", () => {
     );
 
     //ACT
-    const input = screen.getByLabelText(/first name/i);
+    const input = screen.getByTestId("input-field-input");
     await user.type(input, "Adam");
 
     //ASSERT
@@ -178,20 +215,15 @@ describe("input field test", () => {
     );
 
     //ACT
-    await user.click(screen.getByText(/first name/i));
+    await user.click(screen.getByTestId("input-field-label"));
 
     //ASSERT
-    expect(screen.getByLabelText(/first name/i)).toHaveFocus();
+    expect(screen.getByTestId("input-field-input")).toHaveFocus();
   });
 
   it("should show the selected gender it receives", () => {
     //ARRANGE
     const handleFieldChange = vi.fn();
-    const options = [
-      { label: "Male", value: "male" },
-      { label: "Female", value: "female" },
-      { label: "Other", value: "other" },
-    ];
     render(
       <InputField
         name="gender"
@@ -200,13 +232,13 @@ describe("input field test", () => {
         placeholder="Select gender"
         value="female"
         id="GenderID"
-        options={options}
+        options={genderOptions}
         handleFieldChange={handleFieldChange}
       />,
     );
 
     //ACT
-    const select = screen.getByRole("combobox");
+    const select = screen.getByTestId("input-field-select");
 
     //ASSERT
     expect(select).toHaveValue("female");
@@ -215,11 +247,6 @@ describe("input field test", () => {
   it("should show the selected membership plan it receives", () => {
     //ARRANGE
     const handleFieldChange = vi.fn();
-    const options = [
-      { label: "Basic", value: "basic" },
-      { label: "Standard", value: "standard" },
-      { label: "Premium", value: "premium" },
-    ];
     render(
       <InputField
         name="membershipPlan"
@@ -228,13 +255,13 @@ describe("input field test", () => {
         placeholder="Select plan"
         value="premium"
         id="MembershipPlanID"
-        options={options}
+        options={planOptions}
         handleFieldChange={handleFieldChange}
       />,
     );
 
     //ACT
-    const select = screen.getByRole("combobox");
+    const select = screen.getByTestId("input-field-select");
 
     //ASSERT
     expect(select).toHaveValue("premium");
@@ -244,11 +271,6 @@ describe("input field test", () => {
     //ARRANGE
     const user = userEvent.setup();
     const handleFieldChange = vi.fn();
-    const options = [
-      { label: "Male", value: "male" },
-      { label: "Female", value: "female" },
-      { label: "Other", value: "other" },
-    ];
     render(
       <InputField
         name="gender"
@@ -257,13 +279,13 @@ describe("input field test", () => {
         placeholder="Select gender"
         value=""
         id="GenderID"
-        options={options}
+        options={genderOptions}
         handleFieldChange={handleFieldChange}
       />,
     );
 
     //ACT
-    const select = screen.getByRole("combobox");
+    const select = screen.getByTestId("input-field-select");
     await user.selectOptions(select, "female");
 
     //ASSERT
@@ -274,11 +296,6 @@ describe("input field test", () => {
     //ARRANGE
     const user = userEvent.setup();
     const handleFieldChange = vi.fn();
-    const options = [
-      { label: "Basic", value: "basic" },
-      { label: "Standard", value: "standard" },
-      { label: "Premium", value: "premium" },
-    ];
     render(
       <InputField
         name="membershipPlan"
@@ -287,13 +304,13 @@ describe("input field test", () => {
         placeholder="Select plan"
         value=""
         id="MembershipPlanID"
-        options={options}
+        options={planOptions}
         handleFieldChange={handleFieldChange}
       />,
     );
 
     //ACT
-    const select = screen.getByRole("combobox");
+    const select = screen.getByTestId("input-field-select");
     await user.selectOptions(select, "premium");
 
     //ASSERT
