@@ -28,3 +28,8 @@
 .Reset:hover {
   border-color: #3a3a3a;
 }
+
+.Disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
