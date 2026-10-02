@@ -1,4 +1,9 @@
 import validator from "validator";
+import {
+  parsePhoneNumberFromString,
+  validatePhoneNumberLength,
+  AsYouType,
+} from "libphonenumber-js";
 export const isValidFirstName = (value: string) => {
   if (value.length >= 3) {
     return "";
@@ -73,4 +78,24 @@ export const isValidProfileImage = (file: File | null) => {
     return "";
   }
   return "Profile picture is required";
+};
+
+export const formatPhone = (value: string) => new AsYouType("US").input(value);
+
+export const isValidPhoneNumber = (value: string) => {
+  if (!value.trim()) return "Phone number is required. Format: (212) 555-1234";
+
+  const lengthIssue = validatePhoneNumberLength(value, "US");
+  if (lengthIssue === "TOO_SHORT")
+    return "Phone number is too short. Format: (212) 555-1234";
+  if (lengthIssue === "TOO_LONG")
+    return "Phone number is too long. Format: (212) 555-1234";
+  if (lengthIssue)
+    return "Please enter a valid phone number. Format: (212) 555-1234";
+
+  const phone = parsePhoneNumberFromString(value, "US");
+  if (!phone?.isValid())
+    return "Please enter a valid US phone number. Format: (212) 555-1234";
+
+  return "";
 };

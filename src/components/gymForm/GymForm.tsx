@@ -12,12 +12,14 @@ import styles from "./index.module.css";
 import { toast, ToastContainer } from "react-toastify";
 import { ALLOWED_TYPES, MAX_IMAGE_SIZE } from "./constants";
 import {
+  formatPhone,
   isValidBirthDate,
   isValidEmail,
   isValidFirstName,
   isValidGender,
   isValidLastName,
   isValidMembershipPlan,
+  isValidPhoneNumber,
   isValidProfileImage,
 } from "../../helpers/gymForm.validators";
 
@@ -112,6 +114,7 @@ export const GymForm = () => {
     membershipPlan: isValidMembershipPlan(state.membershipPlan),
     email: isValidEmail(state.email),
     profileImage: isValidProfileImage(state.profileImage),
+    phoneNumber: isValidPhoneNumber(state.phoneNumber),
   };
 
   return (
@@ -206,8 +209,11 @@ export const GymForm = () => {
             label="PHONE NUMBER*"
             type={InputType.TEL}
             placeholder="Phone Number"
-            value={state.phoneNumber}
+            value={formatPhone(state.phoneNumber)}
             id="PhoneNumberID"
+            handleBlur={handleBlur}
+            touched={state.touched.phoneNumber}
+            error={errors.phoneNumber}
           />
         </div>
         <InputField
