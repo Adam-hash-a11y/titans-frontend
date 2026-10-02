@@ -33,3 +33,11 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+.Submit.Disabled:hover {
+  background-color: #ff4d1c;
+}
+
+.Reset.Disabled:hover {
+  border-color: #2a2a2a;
+}
