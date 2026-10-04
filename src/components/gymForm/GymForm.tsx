@@ -87,9 +87,8 @@ export const GymForm = () => {
       const response = await registerUser(formData);
       console.log(response.data);
       toast.success("Registered successfully!");
-    } catch (error) {
-      console.error(error);
-      toast.error("Registration failed. Please try again.");
+    } catch (err) {
+      toast.error((err as Error).message);
     }
   };
   const handleReset = () => {
