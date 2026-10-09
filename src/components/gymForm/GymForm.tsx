@@ -28,13 +28,24 @@ export const GymForm = () => {
   console.log(state);
 
   const handleFieldChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
+  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+) => {
+  if (e.target.name === "phoneNumber") {
     dispatch({
       type: SET_FIELD,
-      payload: { value: e.target.value, name: e.target.name },
+      payload: {
+        value: e.target.value.replace(/\D/g, "").slice(0, 10),
+        name: e.target.name,
+      },
     });
-  };
+    return;
+  }
+
+  dispatch({
+    type: SET_FIELD,
+    payload: { value: e.target.value, name: e.target.name },
+  });
+};
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: SET_TOUCHED, payload: { name: "profileImage" } });
