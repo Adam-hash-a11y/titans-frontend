@@ -53,6 +53,24 @@ describe("isValidFirstName", () => {
     //ASSERT
     expect(result).toBe("First name must be at least 3 characters");
   });
+
+  it("should return an error for numbers", () => {
+    //ARRANGE
+    //ACT
+    const result = isValidFirstName("Adam123");
+
+    //ASSERT
+    expect(result).toBe("First name must contain letters only");
+  });
+
+  it("should return an error for special characters", () => {
+    //ARRANGE
+    //ACT
+    const result = isValidFirstName("Adam!");
+
+    //ASSERT
+    expect(result).toBe("First name must contain letters only");
+  });
 });
 
 describe("isValidLastName", () => {
@@ -80,7 +98,7 @@ describe("isValidLastName", () => {
     const result = isValidLastName("Li");
 
     //ASSERT
-    expect(result).toBe("Last  name must be at least 3 characters");
+    expect(result).toBe("Last name must be at least 3 characters");
   });
 
   it("should return an error for an empty string", () => {
@@ -89,7 +107,25 @@ describe("isValidLastName", () => {
     const result = isValidLastName("");
 
     //ASSERT
-    expect(result).toBe("Last  name must be at least 3 characters");
+    expect(result).toBe("Last name must be at least 3 characters");
+  });
+
+  it("should return an error for numbers", () => {
+    //ARRANGE
+    //ACT
+    const result = isValidLastName("Hamdi123");
+
+    //ASSERT
+    expect(result).toBe("Last name must contain letters only");
+  });
+
+  it("should return an error for special characters", () => {
+    //ARRANGE
+    //ACT
+    const result = isValidLastName("Hamdi!");
+
+    //ASSERT
+    expect(result).toBe("Last name must contain letters only");
   });
 });
 
