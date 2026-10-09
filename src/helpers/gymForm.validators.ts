@@ -4,19 +4,25 @@ import {
   validatePhoneNumberLength,
 } from "libphonenumber-js";
 export const isValidFirstName = (value: string) => {
-  if (value.length >= 3) {
-    return "";
-  } else {
+  const name = value.trim();
+  if (name.length < 3) {
     return "First name must be at least 3 characters";
   }
+  if (!validator.isAlpha(name)) {
+    return "First name must contain letters only";
+  }
+  return "";
 };
 
 export const isValidLastName = (value: string) => {
-  if (value.length >= 3) {
-    return "";
-  } else {
-    return "Last  name must be at least 3 characters";
+  const name = value.trim();
+  if (name.length < 3) {
+    return "Last name must be at least 3 characters";
   }
+  if (!validator.isAlpha(name)) {
+    return "Last name must contain letters only";
+  }
+  return "";
 };
 
 const GENDERS = new Set(["male", "female", "other"]);
