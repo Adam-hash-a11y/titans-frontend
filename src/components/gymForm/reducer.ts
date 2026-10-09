@@ -1,3 +1,12 @@
+import {
+  isValidFirstName,
+  isValidLastName,
+  isValidEmail,
+  isValidBirthDate,
+  isValidGender,
+  isValidMembershipPlan,
+  isValidPhoneNumber,
+} from "../../helpers/gymForm.validators";
 import { RESET, SET_FIELD, SET_TOUCHED, type Action } from "./actions";
 import type { Gender, MembershipPlan } from "./types";
 
@@ -45,8 +54,52 @@ export const initialState: State = {
 
 export const gymFormReducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case SET_FIELD:
-      return { ...state, [action.payload.name]: action.payload.value };
+    case SET_FIELD: {
+      const value = action.payload.value as string;
+      const newTouched = { ...state.touched };
+
+      if (action.payload.name === "firstName") {
+        if (isValidFirstName(value) === "") {
+          newTouched.firstName = true;
+        }
+      }
+      if (action.payload.name === "lastName") {
+        if (isValidLastName(value) === "") {
+          newTouched.lastName = true;
+        }
+      }
+      if (action.payload.name === "email") {
+        if (isValidEmail(value) === "") {
+          newTouched.email = true;
+        }
+      }
+      if (action.payload.name === "phoneNumber") {
+        if (isValidPhoneNumber(value) === "") {
+          newTouched.phoneNumber = true;
+        }
+      }
+      if (action.payload.name === "birthDate") {
+        if (isValidBirthDate(value) === "") {
+          newTouched.birthDate = true;
+        }
+      }
+      if (action.payload.name === "gender") {
+        if (isValidGender(value) === "") {
+          newTouched.gender = true;
+        }
+      }
+      if (action.payload.name === "membershipPlan") {
+        if (isValidMembershipPlan(value) === "") {
+          newTouched.membershipPlan = true;
+        }
+      }
+
+      return {
+        ...state,
+        [action.payload.name]: action.payload.value,
+        touched: newTouched,
+      };
+    }
 
     case RESET: {
       return initialState;
