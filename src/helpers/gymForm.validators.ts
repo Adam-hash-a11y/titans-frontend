@@ -2,7 +2,6 @@ import validator from "validator";
 import {
   parsePhoneNumberFromString,
   validatePhoneNumberLength,
-  AsYouType,
 } from "libphonenumber-js";
 export const isValidFirstName = (value: string) => {
   if (value.length >= 3) {
@@ -80,8 +79,13 @@ export const isValidProfileImage = (file: File | null) => {
   return "Profile picture is required";
 };
 
-export const formatPhone = (value: string) => new AsYouType("US").input(value);
-
+export const formatPhone = (value: string) => {
+  const d = value.replace(/\D/g, "").slice(0, 10);
+  if (d.length === 0) return "";
+  if (d.length <= 3) return `(${d}`;
+  if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+};
 export const isValidPhoneNumber = (value: string) => {
   if (!value.trim()) return "Phone number is required. Format: (212) 555-1234";
 
